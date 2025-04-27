@@ -1,0 +1,71 @@
+.jstree-default .jstree-anchor {
+  color: #3f4254;
+  padding: 0 8px 0 4px; }
+
+.jstree-default .jstree-icon {
+  color: #ffad0e;
+  font-size: 1.3rem; }
+
+.jstree-default .jstree-icon.fa {
+  font-size: 1.2rem; }
+
+.jstree-default .jstree-icon.la {
+  font-size: 1.5rem; }
+
+.jstree-default .jstree-disabled {
+  line-height: auto;
+  opacity: 0.7;
+  height: auto;
+  cursor: not-allowed; }
+
+.jstree-default .jstree-disabled .jstree-icon {
+  color: #3f4254; }
+
+.jstree-default .fa-file-text {
+  color: #969696; }
+
+.jstree-default .jstree-clicked {
+  border: 0;
+  box-shadow: none;
+  background: #f3f6f9;
+  -webkit-box-shadow: none; }
+
+.jstree-default .jstree-hovered {
+  box-shadow: none;
+  border: 0;
+  background-color: #f3f6f9;
+  -webkit-box-shadow: none; }
+
+.jstree-default .jstree-wholerow-clicked,
+.jstree-default .jstree-wholerow-clicked {
+  box-shadow: none;
+  background: #ebedf3;
+  -webkit-box-shadow: none; }
+
+.jstree-default .jstree-wholerow-hovered,
+.jstree-default.jstree-wholerow .jstree-wholerow-hovered {
+  border: 0;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  background-color: #f3f6f9; }
+
+.jstree-open > .jstree-anchor > .fa-folder:before {
+  content: "\f07c";
+  color: #ffad0e;
+  margin-left: 2px; }
+
+.jstree-open > .jstree-anchor > .la-folder:before {
+  margin-left: 2px;
+  color: #ffad0e;
+  content: "\f200"; }
+
+.jstree-default .jstree-clicked {
+  background: transparent; }
+
+.jstree-anchor {
+  background: transparent;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #000 !important; }
+
+/*# sourceMappingURL=styles.css.map */
