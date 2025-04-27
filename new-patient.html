@@ -364,20 +364,7 @@
         window.location.href = 'all-patients.html';
       });
     </script>
-    <script>
-        // Ensure user is authenticated; redirect to login if not
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'page-login.html';
-            }
-        });
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (!session) {
-                window.location.href = 'page-login.html';
-            }
-        });
-    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const { data: { user } } = await supabaseClient.auth.getUser();
