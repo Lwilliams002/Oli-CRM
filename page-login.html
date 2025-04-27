@@ -1,17 +1,4 @@
-<script>
-  // Ensure user is authenticated; redirect to login if not
-  document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session) {
-      window.location.href = 'page-login.html';
-    }
-  });
-  supabaseClient.auth.onAuthStateChange((event, session) => {
-    if (!session) {
-      window.location.href = 'page-login.html';
-    }
-  });
-</script>
+
 <!DOCTYPE html>
 <html lang="en">
 
