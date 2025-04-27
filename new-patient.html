@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabib Apps web | Admin Dashboard Template</title>
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/main/css/fonts.css">
+    <link rel="stylesheet" href="assets/main/css/style.css">
+</head>
+
+<body>
+    <div id="main-wrapper" class="show">
+
+        <!-- start section sidebar -->
+        <aside class="left-panel nicescroll-box">
+            <nav class="navigation">
+                <ul class="list-unstyled main-menu">
+                    <li class="has-submenu active">
+                        <a href="index.html">
+                            <i class="fas fa-th-large"></i>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-label">Patients</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="new-patient.html">New Patient</a></li>
+                            <li><a href="all-patients.html">All Patients</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="new-appointment.html">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span class="nav-label">Appointment</span>
+                        </a>
+                    </li>
+
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fa fa-tag"></i>
+                            <span class="nav-label">Authentication</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="patient-details.html">Empty Page</a></li>
+                            <li><a href="page-login.html">Login simple</a></li>
+                            <li><a href="page-login-one.html">Login with Bg Image</a></li>
+                            <li><a href="page-register.html">Register simple</a></li>
+                            <li><a href="page-register-one.html">Register with Bg Image</a></li>
+                            <li><a href="page-lock-screen.html">Lock Screen</a></li>
+                            <li><a href="page-forgot-password.html">Page forgot password</a></li>
+                            <li><a href="page-error-404.html">Error 404</a></li>
+                            <li><a href="page-error-500.html">Error 500</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-widgets">
+                <div class="top-sidebar box-shadow mx-25 m-b-30 p-b-20 text-center">
+                    <a href="new-appointment.html">
+                        <img src="https://via.placeholder.com/215/f8f8f8/2b2b2b" class="side-img" alt="img">
+                    </a>
+                    <a href="#">
+                        <h4 class="text-primary mb-0">Make an Appointments</h4>
+                    </a>
+                </div>
+                <div class="copyright text-center">
+                    <p class="mb-0"> Tabib Dashboard</p>
+                    <p class="mb-0"> © 2022 </p>
+                </div>
+            </div>
+        </aside>
+        <!-- End section sidebar -->
+
+
+        <!-- start logo components -->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html"> <img class="logo-tabib" src="assets/images/download.png" alt=""></a>
+                <a href="index.html"><img class="brand-title" src="assets/images/logo.png" alt=""></a>
+            </div>
+        </div>
+        <!-- End logo components -->
+
+
+        <!-- start section header -->
+        <div class="header">
+            <header class="top-head container-fluid">
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="line"></span><span class="line"></span><span class="line"></span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="fullscreen notification_dropdown widget-5">
+                        <div class="full">
+                            <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="my-account-wrapper widget-7">
+                        <div class="account-wrapper">
+                            <div class="account-control">
+                                <a class="login header-profile" href="#" title="Sign in">
+                                    <div class="header-info">
+                                        <span>Dr Roberts</span>
+                                        <small>Admin</small>
+                                    </div>
+                                    <img src="https://via.placeholder.com/150/f8f8f8/2b2b2b" alt="people">
+                                </a>
+                                <div class="account-dropdown-form dropdown-container">
+                                    <div class="form-content">
+                                        <a href="doctor-settings.html">
+                                            <i class="far fa-user"></i>
+                                            <span class="ml-2">Profile</span>
+                                        </a>
+                                        <a href="#">
+                                            <i class="far fa-envelope"></i>
+                                            <span class="ml-2">Inbox</span>
+                                        </a>
+                                        <a href="page-login.html">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span class="ml-2">Logout </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- End section header -->
+
+
+        <!-- start section content -->
+        <div class="content-body">
+            <div class="warper container-fluid">
+                <div class="new-patients main_container">
+                    <div class="row page-titles mx-0">
+                        <div class="col-sm-6 p-md-0">
+                            <div class="welcome-text">
+                                <h4 class="text-primary">New Patient</h4>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active"><a href="/new-patient.html">New Patient</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Personal Information</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="basic-form">
+                                        <form id="new-patient-form">
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <input type="text" name="firstName" class="form-control"
+                                                            placeholder="First Name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" name="lastName" class="form-control" placeholder="Last name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="email" name="email" class="form-control" placeholder="Email">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" name="mobile" class="form-control"
+                                                            placeholder="Mobile No.">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input type="text" name="birthday" class="form-control"
+                                                                placeholder="Birthday">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select name="maritalStatus" class="form-control form-select">
+                                                            <option> Marital status </option>
+                                                            <option>Married</option>
+                                                            <option>Unmarried</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select name="sex" class="form-control form-select">
+                                                            <option>Sex</option>
+                                                            <option>Male</option>
+                                                            <option>Female</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select name="bloodGroup" class="form-control form-select">
+                                                            <option>Blood Group</option>
+                                                            <option>A+</option>
+                                                            <option>A-</option>
+                                                            <option>B+</option>
+                                                            <option>B-</option>
+                                                            <option>O+</option>
+                                                            <option>O-</option>
+                                                            <option>AB+</option>
+                                                            <option>AB-</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-4"></div>
+                                                <div class="col-xl-4">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-12">
+                                                            <input type="text" name="weight" class="form-control"
+                                                                placeholder="Patient Weight">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4">
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-12">
+                                                            <input type="text" name="height" class="form-control"
+                                                                placeholder="Patient Height">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-4">
+                                                    <div class="form-group">
+                                                        <textarea name="address" class="form-control" placeholder="Address"
+                                                            rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-8">
+                                                    <div class="form-group">
+                                                        <textarea name="history" class="form-control" placeholder="Patient History"
+                                                            rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <div class="form-group">
+                                                        <label for="patient-documents" class="form-label">Upload Documents</label>
+                                                        <input type="file" id="patient-documents" name="patientDocuments" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" multiple>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 text-end">
+                                                    <button type="submit" form="new-patient-form" class="btn btn-primary">Save All</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End section content -->
+
+
+        <!-- start section footer -->
+        <div class="footer">
+            <div class="copyright">
+                <p class="mb-0">Copyright © Designed &amp; Developed by <a href="uxign.com" target="_blank">Uxign</a>
+                    2022
+                </p>
+            </div>
+        </div>
+        <!-- End section footer -->
+
+
+    </div>
+
+
+    <!-- JQuery v3.5.1 -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+
+    <!-- popper js -->
+    <script src="assets/plugins/popper/popper.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Moment -->
+    <script src="assets/plugins/moment/moment.min.js"></script>
+
+    <!-- Date Range Picker -->
+    <script src="assets/plugins/daterangepicker/daterangepicker.min.js"></script>
+
+    <!-- Datatable -->
+    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/init-tdatatable.js"></script>
+
+    <!-- Main Custom JQuery -->
+    <script src="assets/js/toggleFullScreen.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/option-themes.js"></script>
+
+    <script>
+      // Initialize Supabase client
+      const SUPABASE_URL = 'https://aqkkmgjlcxdbuhwzjeou.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxa2ttZ2psY3hkYnVod3pqZW91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3MjYxNjAsImV4cCI6MjA2MTMwMjE2MH0.kVMtxC6XgrGA8BFwbruCOY5KYv84Phb1M6gi2brojtY';
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      document.getElementById('new-patient-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // Collect form fields
+        const form = e.target;
+        const formData = new FormData(form);
+        // Upload documents if any
+        const files = formData.getAll('patientDocuments');
+        const uploadedUrls = [];
+        for (let file of files) {
+          if (file && file.name) {
+            const { data, error } = await supabaseClient
+              .storage.from('patient-documents')
+              .upload(`documents/${Date.now()}_${file.name}`, file);
+            if (error) {
+              console.error('Upload error:', error);
+            } else {
+              uploadedUrls.push({ path: data.path });
+            }
+          }
+        }
+        // Prepare record
+        const record = {
+          first_name: formData.get('firstName'),
+          last_name: formData.get('lastName'),
+          email: formData.get('email'),
+          phone: formData.get('mobile'),
+          birthday: formData.get('birthday'),
+          marital_status: formData.get('maritalStatus'),
+          sex: formData.get('sex'),
+          blood_group: formData.get('bloodGroup'),
+          weight: formData.get('weight'),
+          height: formData.get('height'),
+          address: formData.get('address'),
+          history: formData.get('history')
+        };
+        // Insert into Supabase
+        const { data, error } = await supabaseClient
+          .from('patients')
+          .insert([record])
+          .select();
+
+        if (error) {
+          console.error('Patient insert failed:', error);
+          alert('Could not save patient: ' + error.message);
+          return; // stop further execution
+        }
+
+        if (!data || data.length === 0) {
+          console.error('No patient data returned');
+          alert('Patient created but no ID returned.');
+          return;
+        }
+
+        const patientId = data[0].id;
+        // Insert each uploaded document metadata
+        for (let fileInfo of uploadedUrls) {
+          const { path } = fileInfo;
+          const docRecord = {
+            patient_id: patientId,
+            file_url: path,
+            file_type: path.split('.').pop().toLowerCase()
+          };
+          const { error: docErr } = await supabaseClient
+            .from('patient_documents')
+            .insert([docRecord]);
+          if (docErr) console.error('Document insert error:', docErr);
+        }
+        alert('Patient saved successfully!');
+        window.location.href = 'all-patients.html';
+      });
+    </script>
+
+</body>
+
+</html>

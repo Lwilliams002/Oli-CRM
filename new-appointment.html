@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabib Apps web | Admin Dashboard Template</title>
+    <!-- Supabase UMD -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://aqkkmgjlcxdbuhwzjeou.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxa2ttZ2psY3hkYnVod3pqZW91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3MjYxNjAsImV4cCI6MjA2MTMwMjE2MH0.kVMtxC6XgrGA8BFwbruCOY5KYv84Phb1M6gi2brojtY';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/main/css/fonts.css">
+    <link rel="stylesheet" href="assets/main/css/style.css">
+</head>
+
+<body>
+    <div id="main-wrapper" class="show">
+
+
+        <!-- start section sidebar -->
+        <aside class="left-panel nicescroll-box">
+            <nav class="navigation">
+                <ul class="list-unstyled main-menu">
+                    <li class="has-submenu active">
+                        <a href="index.html">
+                            <i class="fas fa-th-large"></i>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-label">Patients</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="new-patient.html">New Patient</a></li>
+                            <li><a href="all-patients.html">All Patients</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="new-appointment.html">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span class="nav-label">Appointment</span>
+                        </a>
+                    </li>
+
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fa fa-tag"></i>
+                            <span class="nav-label">Authentication</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="patient-details.html">Empty Page</a></li>
+                            <li><a href="page-login.html">Login simple</a></li>
+                            <li><a href="page-login-one.html">Login with Bg Image</a></li>
+                            <li><a href="page-register.html">Register simple</a></li>
+                            <li><a href="page-register-one.html">Register with Bg Image</a></li>
+                            <li><a href="page-lock-screen.html">Lock Screen</a></li>
+                            <li><a href="page-forgot-password.html">Page forgot password</a></li>
+                            <li><a href="page-error-404.html">Error 404</a></li>
+                            <li><a href="page-error-500.html">Error 500</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-widgets">
+                <div class="top-sidebar box-shadow mx-25 m-b-30 p-b-20 text-center">
+                    <a href="new-appointment.html">
+                        <img src="https://via.placeholder.com/215/f8f8f8/2b2b2b" class="side-img" alt="img">
+                    </a>
+                    <a href="#">
+                        <h4 class="text-primary mb-0">Make an Appointments</h4>
+                    </a>
+                </div>
+                <div class="copyright text-center">
+                    <p class="mb-0"> Tabib Dashboard</p>
+                    <p class="mb-0"> © 2022 </p>
+                </div>
+            </div>
+        </aside>
+        <!-- End section sidebar -->
+
+
+        <!-- start logo components -->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html"> <img class="logo-tabib" src="assets/images/download.png" alt=""></a>
+                <a href="index.html"><img class="brand-title" src="assets/images/logo.png" alt=""></a>
+            </div>
+        </div>
+        <!-- End logo components -->
+
+
+        <!-- start section header -->
+        <div class="header">
+            <header class="top-head container-fluid">
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="line"></span><span class="line"></span><span class="line"></span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="fullscreen notification_dropdown widget-5">
+                        <div class="full">
+                            <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="my-account-wrapper widget-7">
+                        <div class="account-wrapper">
+                            <div class="account-control">
+                                <a class="login header-profile" href="#" title="Sign in">
+                                    <div class="header-info">
+                                        <span>Dr Roberts</span>
+                                        <small>Admin</small>
+                                    </div>
+                                    <img src="https://via.placeholder.com/150/f8f8f8/2b2b2b" alt="people">
+                                </a>
+                                <div class="account-dropdown-form dropdown-container">
+                                    <div class="form-content">
+                                        <a href="doctor-settings.html">
+                                            <i class="far fa-user"></i>
+                                            <span class="ml-2">Profile</span>
+                                        </a>
+                                        <a href="#">
+                                            <i class="far fa-envelope"></i>
+                                            <span class="ml-2">Inbox</span>
+                                        </a>
+                                        <a href="page-login.html">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span class="ml-2">Logout </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- End section header -->
+
+
+        <!-- start section content -->
+        <div class="content-body">
+            <div class="warper container-fluid">
+
+                <div class="new_appointment main_container">
+                    <div class="row page-titles mx-0">
+                        <div class="col-sm-6 p-md-0">
+                            <div class="welcome-text">
+                                <h4 class="text-primary">New Appointment</h4>
+                                <p class="mb-0">Add New Appointment</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active"><a href="/new-appointment.html">New Appointment</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="card shadow">
+                          <div class="card-header">
+                            <h5>New Appointment</h5>
+                          </div>
+                          <div class="card-body">
+                            <form id="new-appointment-form" class="row align-items-start">
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="date">Date</label>
+                                <input name="date" id="date" class="form-control" type="text" value="06/17/2022">
+                              </div>
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="timeSlot">Time Slot</label>
+                                <select name="timeSlot" id="timeSlot" class="form-control form-select">
+                                  <option value="00:00">12:00 AM</option>
+                                  <option value="00:30">12:30 AM</option>
+                                  <option value="01:00">1:00 AM</option>
+                                  <option value="01:30">1:30 AM</option>
+                                  <option value="02:00">2:00 AM</option>
+                                  <option value="02:30">2:30 AM</option>
+                                  <option value="03:00">3:00 AM</option>
+                                  <option value="03:30">3:30 AM</option>
+                                  <option value="04:00">4:00 AM</option>
+                                  <option value="04:30">4:30 AM</option>
+                                  <option value="05:00">5:00 AM</option>
+                                  <option value="05:30">5:30 AM</option>
+                                  <option value="06:00">6:00 AM</option>
+                                  <option value="06:30">6:30 AM</option>
+                                  <option value="07:00">7:00 AM</option>
+                                  <option value="07:30">7:30 AM</option>
+                                  <option value="08:00">8:00 AM</option>
+                                  <option value="08:30">8:30 AM</option>
+                                  <option value="09:00">9:00 AM</option>
+                                  <option value="09:30">9:30 AM</option>
+                                  <option value="10:00">10:00 AM</option>
+                                  <option value="10:30">10:30 AM</option>
+                                  <option value="11:00">11:00 AM</option>
+                                  <option value="11:30">11:30 AM</option>
+                                  <option value="12:00">12:00 PM</option>
+                                  <option value="12:30">12:30 PM</option>
+                                  <option value="13:00">1:00 PM</option>
+                                  <option value="13:30">1:30 PM</option>
+                                  <option value="14:00">2:00 PM</option>
+                                  <option value="14:30">2:30 PM</option>
+                                  <option value="15:00">3:00 PM</option>
+                                  <option value="15:30">3:30 PM</option>
+                                  <option value="16:00">4:00 PM</option>
+                                  <option value="16:30">4:30 PM</option>
+                                  <option value="17:00">5:00 PM</option>
+                                  <option value="17:30">5:30 PM</option>
+                                  <option value="18:00">6:00 PM</option>
+                                  <option value="18:30">6:30 PM</option>
+                                  <option value="19:00">7:00 PM</option>
+                                  <option value="19:30">7:30 PM</option>
+                                  <option value="20:00">8:00 PM</option>
+                                  <option value="20:30">8:30 PM</option>
+                                  <option value="21:00">9:00 PM</option>
+                                  <option value="21:30">9:30 PM</option>
+                                  <option value="22:00">10:00 PM</option>
+                                  <option value="22:30">10:30 PM</option>
+                                  <option value="23:00">11:00 PM</option>
+                                  <option value="23:30">11:30 PM</option>
+                                </select>
+                              </div>
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="patientId">Patient</label>
+                                <select id="patientId" name="patientId" class="form-control form-select">
+                                  <option value="">Select Patient...</option>
+                                </select>
+                              </div>
+                              <div class="col-lg-12 form-group">
+                                <label for="motif">Motif Patient</label>
+                                <textarea name="motif" id="motif" class="form-control" rows="3"></textarea>
+                              </div>
+                              <div class="col-lg-12 text-end">
+                                <button type="submit" class="btn btn-primary">Save Appointment</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- start section footer -->
+        <div class="footer">
+            <div class="copyright">
+                <p class="mb-0">Copyright © Designed &amp; Developed by <a href="uxign.com" target="_blank">Uxign</a>
+                    2022
+                </p>
+            </div>
+        </div>
+        <!-- End section footer -->
+
+
+        <!-- Modal  -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="modal-title-head-modal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title-head-modal">Michael R Sheets</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span
+                                aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Motif Patient</h5>
+                        <p>Caregivers can be spouses, family members, friends, or even a close neighbor. As a caregiver,
+                            you are an integral part of the team. Moffitt is based on the core concept of Patient and
+                            Family-Centered Care which in short is a partnership
+                            between you, the patient and the medical treatment team. As part of the team, you will help
+                            coordinate the patient’s care. That said, you must also make sure you are taking care of
+                            yourself.
+                        </p>
+                        <hr>
+                        <form>
+                            <div class="form-group">
+                                <label>Review doctors</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn badge-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="changeTimeAndDate" tabindex="-1" role="dialog"
+            aria-labelledby="modal-title-edit-modal">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title-edit-modal"><img class="rounded-circle" width="35"
+                                src="https://via.placeholder.com/150/f8f8f8/2b2b2b" alt=""> Michael R Sheets
+                        </h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row align-items-start">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" value="06/17/2022">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <select class="form-control form-select">
+                                        <option> 07:00 - 07:30</option>
+                                        <option> 07:30 - 08:00</option>
+                                        <option> 08:00 - 08:30</option>
+                                        <option> 08:30 - 09:00</option>
+                                        <option> 09:00 - 09:30</option>
+                                        <option> 09:30 - 10:00</option>
+                                        <option> 10:00 - 10:30</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn badge-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Removed modal for new appointment -->
+        <!-- End Modal  -->
+
+    </div>
+
+
+    <!-- JQuery v3.5.1 -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+
+    <!-- popper js -->
+    <script src="assets/plugins/popper/popper.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Moment -->
+    <script src="assets/plugins/moment/moment.min.js"></script>
+
+    <!-- Date Range Picker -->
+    <script src="assets/plugins/daterangepicker/daterangepicker.min.js"></script>
+
+    <!-- Datatable -->
+    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/init-tdatatable.js"></script>
+
+
+    <!-- Main Custom JQuery -->
+    <script src="assets/js/toggleFullScreen.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/option-themes.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const select = document.getElementById('patientId');
+        // Fetch all patients
+        const { data: patients, error } = await supabaseClient
+          .from('patients')
+          .select('id, first_name, last_name');
+        if (error) {
+          console.error('Error loading patients:', error);
+          return;
+        }
+        // Populate dropdown
+        patients.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = `${p.first_name} ${p.last_name}`;
+          select.appendChild(opt);
+        });
+      });
+    </script>
+
+    <script>
+      document.getElementById('new-appointment-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const fv = new FormData(form);
+        const record = {
+          patient_id: fv.get('patientId'),
+          appointment_date: fv.get('date'),
+          appointment_time: fv.get('timeSlot'),
+          motif: fv.get('motif')
+        };
+        const { data, error } = await supabaseClient
+          .from('appointments')
+          .insert([record])
+          .select();
+        if (error) {
+          console.error('Insert appointment error:', error);
+          alert('Could not save appointment: ' + error.message);
+        } else {
+          alert('Appointment saved!');
+          // optionally close modal
+          $('#newAppointment').modal('hide');
+          // reload or update table
+          window.location.reload();
+        }
+      });
+    </script>
+
+</body>
+
+</html>

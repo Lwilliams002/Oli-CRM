@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Tabib Apps web | Admin Dashboard Template">
+    <title>Tabib Apps web | Admin Dashboard Template</title>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://aqkkmgjlcxdbuhwzjeou.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxa2ttZ2psY3hkYnVod3pqZW91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3MjYxNjAsImV4cCI6MjA2MTMwMjE2MH0.kVMtxC6XgrGA8BFwbruCOY5KYv84Phb1M6gi2brojtY';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/main/css/fonts.css">
+    <link rel="stylesheet" href="assets/main/css/style.css">
+</head>
+
+<body>
+    <div id="main-wrapper" class="show">
+
+        <div id="sidebar-placeholder"></div>
+
+        <!-- start section content -->
+        <div class="content-body">
+            <div class="warper container-fluid">
+                <div class="row page-titles mx-0">
+                    <div class="col-lg-12 p-md-0">
+                        <h4 class="text-primary">Good morning <span class="names">Dr Roberts</span></h4>
+                        <p class="mb-0">Tabib Apps web | Admin Dashboard Template</p>
+                    </div>
+                </div>
+                <div class="new-patients main_container">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="widget card card-primary bg-card1">
+                                <div class="card-body">
+                                    <div class="media text-center">
+                                        <span>
+                                            <i class="fas fa-calendar-check fa-2x"></i>
+                                        </span>
+                                        <div class="media-body">
+                                            <span class="text-white">Today's Appointments</span>
+                                            <h3 id="todays-appointments-count" class="mb-0 text-white">24</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="widget card card-danger bg-card2">
+                                <div class="card-body">
+                                    <div class="media text-center">
+                                        <span>
+                                            <i class="fas fa-user-nurse fa-2x"></i>
+                                        </span>
+                                        <div class="media-body">
+                                            <span class="text-white">Total Patients</span>
+                                            <h3 id="total-patients-count" class="mb-0 text-white">1,200</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <h4 class="card-title">Appointment List</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="example1" class="display nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>Time</th>
+                                                    <th>Date</th>
+                                                    <th>Patient</th>
+                                                    <th>Address</th>
+                                                    <th>Phone</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End section content -->
+
+
+        <!-- start section footer -->
+        <div class="footer">
+            <div class="copyright">
+                <p class="mb-0">Copyright © Designed &amp; Developed by <a href="uxign.com" target="_blank">Uxign</a>
+                    2022
+                </p>
+            </div>
+        </div>
+        <!-- End section footer -->
+
+
+    </div>
+
+    <!-- JQuery v3.5.1 -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+    <script>
+      $(document).ready(async function() {
+        const table = $('#example1').DataTable();
+        // Build patient name map, phone map, and address map
+        const { data: patients } = await supabaseClient
+          .from('patients').select('id, first_name, last_name, phone, address');
+        const patientMap = {};
+        const phoneMap = {};
+        const addressMap = {};
+        patients.forEach(p => {
+          patientMap[p.id] = `${p.first_name} ${p.last_name}`;
+          phoneMap[p.id] = p.phone || '—';
+          addressMap[p.id] = p.address || '—';
+        });
+        // Fetch appointments
+        const { data: appts } = await supabaseClient
+          .from('appointments')
+          .select('id, appointment_time, appointment_date, patient_id, motif, status')
+          .order('appointment_date', { ascending: false });
+        // Populate table
+        table.clear();
+        appts.forEach(a => {
+          table.row.add([
+            a.appointment_time,
+            a.appointment_date,
+            patientMap[a.patient_id] || 'Unknown',
+            addressMap[a.patient_id] || '—',
+            phoneMap[a.patient_id] || '—',
+            // Status badge column
+            (a.status === 'completed'
+              ? '<span class="badge badge-success">Completed</span>'
+              : '<span class="badge badge-primary">Scheduled</span>'),
+            // Action buttons column
+            `<button class="btn btn-success btn-sm complete-appointment mr-2" data-id="${a.id}" ${a.status === 'completed' ? 'disabled' : ''}>
+               <i class="fas fa-check"></i>
+             </button>
+             <button class="btn btn-danger btn-sm delete-appointment" data-id="${a.id}">
+               <i class="fas fa-trash-alt"></i>
+             </button>`
+          ]);
+        });
+        table.draw();
+        // Handle appointment deletion
+        $('#example1 tbody').on('click', 'button.delete-appointment', async function() {
+          const apptId = this.dataset.id;
+          if (!confirm('Delete this appointment?')) return;
+          const { error } = await supabaseClient
+            .from('appointments')
+            .delete()
+            .eq('id', apptId);
+          if (error) {
+            console.error('Delete error:', error);
+            alert('Could not delete appointment: ' + error.message);
+          } else {
+            // Remove the row
+            table
+              .row($(this).closest('tr'))
+              .remove()
+              .draw();
+          }
+        });
+        // Handle marking appointment as completed
+        $('#example1 tbody').on('click', 'button.complete-appointment', async function() {
+          const apptId = this.dataset.id;
+          if (!confirm('Mark this appointment as completed?')) return;
+          const { error } = await supabaseClient
+            .from('appointments')
+            .update({ status: 'completed' })
+            .eq('id', apptId);
+          if (error) {
+            console.error('Completion error:', error);
+            alert('Could not update status: ' + error.message);
+          } else {
+            // Reload the page to refresh the schedule
+            window.location.reload();
+          }
+        });
+      });
+    </script>
+    <!-- Datatable -->
+    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/init-tdatatable.js"></script>
+
+    <!-- popper js -->
+    <script src="assets/plugins/popper/popper.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+    <!-- Moment -->
+    <script src="assets/plugins/moment/moment.min.js"></script>
+    <!-- Date Range Picker -->
+    <script src="assets/plugins/daterangepicker/daterangepicker.min.js"></script>
+    <!-- Chart js -->
+    <script src="assets/plugins/chart/chart/Chart.min.js"></script>
+    <script src="assets/js/charts-custom.js"></script>
+    <!-- Main Custom JQuery -->
+    <script src="assets/js/toggleFullScreen.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/option-themes.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Compute today’s date in YYYY-MM-DD (local date, not UTC)
+        const now = new Date();
+        const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+        // Fetch count of today’s appointments
+        let { count: todayCount, error: appErr } = await supabaseClient
+          .from('appointments')
+          .select('*', { count: 'exact', head: true })
+          .eq('appointment_date', today);
+        if (!appErr) {
+          document.getElementById('todays-appointments-count').textContent = todayCount;
+        } else {
+          console.error('Error fetching today’s appointments count:', appErr);
+        }
+
+        // Fetch total patients count
+        let { count: patientsCount, error: patErr } = await supabaseClient
+          .from('patients')
+          .select('*', { count: 'exact', head: true });
+        if (!patErr) {
+          document.getElementById('total-patients-count').textContent = patientsCount;
+        } else {
+          console.error('Error fetching total patients count:', patErr);
+        }
+      });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('sidebar.html');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                document.getElementById('sidebar-placeholder').innerHTML = await res.text();
+                // initialize collapsible menus and scroll
+                if (window.jQuery) {
+                    $('.main-menu').metisMenu({ toggle: true });
+                    $('.left-panel').niceScroll();
+                }
+            } catch (err) {
+                console.error('Sidebar load failed:', err);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

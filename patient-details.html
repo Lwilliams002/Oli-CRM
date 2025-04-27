@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabib Apps web | Admin Dashboard Template</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/main/css/fonts.css">
+    <link rel="stylesheet" href="assets/main/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://aqkkmgjlcxdbuhwzjeou.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxa2ttZ2psY3hkYnVod3pqZW91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3MjYxNjAsImV4cCI6MjA2MTMwMjE2MH0.kVMtxC6XgrGA8BFwbruCOY5KYv84Phb1M6gi2brojtY';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+</head>
+
+<body>
+    <div id="main-wrapper" class="show">
+
+
+        <!-- start logo components -->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html"> <img class="logo-tabib" src="assets/images/download.png" alt=""></a>
+                <a href="index.html"><img class="brand-title" src="assets/images/logo.png" alt=""></a>
+            </div>
+        </div>
+        <!-- End logo components -->
+
+        <!-- start section sidebar -->
+        <aside class="left-panel nicescroll-box">
+            <nav class="navigation">
+                <ul class="list-unstyled main-menu">
+                    <li class="has-submenu active">
+                        <a href="index.html">
+                            <i class="fas fa-th-large"></i>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-label">Patients</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="new-patient.html">New Patient</a></li>
+                            <li><a href="all-patients.html">All Patients</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="new-appointment.html">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span class="nav-label">Appointment</span>
+                        </a>
+                    </li>
+
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fa fa-tag"></i>
+                            <span class="nav-label">Authentication</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="patient-details.html">Empty Page</a></li>
+                            <li><a href="page-login.html">Login simple</a></li>
+                            <li><a href="page-login-one.html">Login with Bg Image</a></li>
+                            <li><a href="page-register.html">Register simple</a></li>
+                            <li><a href="page-register-one.html">Register with Bg Image</a></li>
+                            <li><a href="page-lock-screen.html">Lock Screen</a></li>
+                            <li><a href="page-forgot-password.html">Page forgot password</a></li>
+                            <li><a href="page-error-404.html">Error 404</a></li>
+                            <li><a href="page-error-500.html">Error 500</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-widgets">
+                <div class="top-sidebar box-shadow mx-25 m-b-30 p-b-20 text-center">
+                    <a href="new-appointment.html">
+                        <img src="https://via.placeholder.com/215/f8f8f8/2b2b2b" class="side-img" alt="img">
+                    </a>
+                    <a href="#">
+                        <h4 class="text-primary mb-0">Make an Appointments</h4>
+                    </a>
+                </div>
+                <div class="copyright text-center">
+                    <p class="mb-0"> Tabib Dashboard</p>
+                    <p class="mb-0"> © 2022 </p>
+                </div>
+            </div>
+        </aside>
+        <!-- End section sidebar -->
+
+        <!-- start section header -->
+        <div class="header">
+            <header class="top-head container-fluid">
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="line"></span><span class="line"></span><span class="line"></span>
+                    </div>
+                    <div class="left-header content-header__menu">
+                        <ul class="list-unstyled">
+                            <li class="nav-link btn">
+                                <a href="#"><i class="far fa-calendar-check"></i> <span> Make an
+                                        appointment</span></a>
+                            </li>
+                            <li class="nav-link btn">
+                                <a href="#"><i class="far fa-file-alt"></i> <span> Write a prescription</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="fullscreen notification_dropdown widget-5">
+                        <div class="full">
+                            <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-6">
+                        <div class="cart-wrapper">
+                            <div class="cart-icon">
+                                <a class="cart-control" href="#">
+                                    <i class="fas fa-bell"></i>
+                                    <div class="pulse-css"></div>
+                                </a>
+                            </div>
+                            <div class="cart-dropdown-form dropdown-container">
+                                <div class="form-content">
+                                    <div class="widget-media main-scroll nicescroll-box">
+                                        <ul class="timeline">
+                                            <li>
+                                                <h6 class="mb-0">Notitications</h6>
+                                            </li>
+                                            <li>
+                                                <div class="timeline-panel">
+                                                    <div class="media mr-2">
+                                                        <img alt="image" src="https://via.placeholder.com/150/f8f8f8/2b2b2b">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1 ">Incoming Message</h6>
+                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="timeline-panel">
+                                                    <div class="media mr-2 media-info">
+                                                        <img alt="image" src="https://via.placeholder.com/150/f8f8f8/2b2b2b">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1">You got a new email</h6>
+                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="timeline-panel">
+                                                    <div class="media mr-2 media-success">
+                                                        <img alt="image" src="https://via.placeholder.com/150/f8f8f8/2b2b2b">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1">Hello world!</h6>
+                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="timeline-panel">
+                                                    <div class="media mr-2">
+                                                        <img alt="image" src="https://via.placeholder.com/150/f8f8f8/2b2b2b">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1">Beep Boop. Beee...</h6>
+                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="timeline-panel">
+                                                    <div class="media mr-2 media-danger">
+                                                        <img alt="image" src="https://via.placeholder.com/150/f8f8f8/2b2b2b">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1">Hello world!</h6>
+                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="timeline-panel">
+                                                    <div class="media mr-2 media-primary">
+                                                        <img alt="image" src="https://via.placeholder.com/150/f8f8f8/2b2b2b">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="mb-1">Incoming Message</h6>
+                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <a class="all-notification btn btn-primary" href="#">
+                                        See all notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-account-wrapper widget-7">
+                        <div class="account-wrapper">
+                            <div class="account-control">
+                                <a class="login header-profile" href="#" title="Sign in">
+                                    <div class="header-info">
+                                        <span>Dr Roberts</span>
+                                        <small>Admin</small>
+                                    </div>
+                                    <img src="https://via.placeholder.com/150/f8f8f8/2b2b2b" alt="people">
+                                </a>
+                                <div class="account-dropdown-form dropdown-container">
+                                    <div class="form-content">
+                                        <a href="doctor-settings.html">
+                                            <i class="far fa-user"></i>
+                                            <span class="ml-2">Profile</span>
+                                        </a>
+                                        <a href="#">
+                                            <i class="far fa-envelope"></i>
+                                            <span class="ml-2">Inbox</span>
+                                        </a>
+                                        <a href="page-login.html">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span class="ml-2">Logout </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- End section header -->
+
+
+        <!-- start section content -->
+        <div class="content-body">
+            <div class="warper container-fluid">
+              <div class="patient-detail">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h4 id="patient-name">Loading...</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <!-- Left column: Personal Info -->
+                      <div class="col-md-6">
+                        <h5>Personal Information</h5>
+                        <dl class="row">
+                          <dt class="col-sm-4">First Name</dt><dd class="col-sm-8"><span id="patient-first"></span></dd>
+                          <dt class="col-sm-4">Last Name</dt><dd class="col-sm-8"><span id="patient-last"></span></dd>
+                          <dt class="col-sm-4">Email</dt><dd class="col-sm-8"><span id="patient-email"></span></dd>
+                          <dt class="col-sm-4">Phone</dt><dd class="col-sm-8"><span id="patient-phone"></span></dd>
+                          <dt class="col-sm-4">Birthday</dt><dd class="col-sm-8"><span id="patient-birthday"></span></dd>
+                          <dt class="col-sm-4">Marital Status</dt><dd class="col-sm-8"><span id="patient-marital"></span></dd>
+                          <dt class="col-sm-4">Sex</dt><dd class="col-sm-8"><span id="patient-sex"></span></dd>
+                        </dl>
+                      </div>
+                      <!-- Right column: Medical & Address -->
+                      <div class="col-md-6">
+                        <h5>Medical & Address</h5>
+                        <dl class="row">
+                          <dt class="col-sm-4">Blood Group</dt><dd class="col-sm-8"><span id="patient-blood"></span></dd>
+                          <dt class="col-sm-4">Weight</dt><dd class="col-sm-8"><span id="patient-weight"></span></dd>
+                          <dt class="col-sm-4">Height</dt><dd class="col-sm-8"><span id="patient-height"></span></dd>
+                          <dt class="col-sm-4">Address</dt><dd class="col-sm-8"><span id="patient-address"></span></dd>
+                          <dt class="col-sm-4">History</dt><dd class="col-sm-8"><span id="patient-history"></span></dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Documents card -->
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Documents</h5>
+                  </div>
+                  <div class="card-body">
+                    <ul id="documents-list" class="list-unstyled mb-0"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- End section content -->
+
+
+    </div>
+
+    <!-- JQuery v3.5.1 -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+
+    <!-- popper js -->
+    <script src="assets/plugins/popper/popper.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Moment -->
+    <script src="assets/plugins/moment/moment.min.js"></script>
+
+    <!-- Date Range Picker -->
+    <script src="assets/plugins/daterangepicker/daterangepicker.min.js"></script>
+
+    <!-- Main Custom JQuery -->
+    <script src="assets/js/toggleFullScreen.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/option-themes.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Parse ?id= from URL
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        if (!id) {
+          document.getElementById('patient-name').textContent = 'No patient ID';
+          return;
+        }
+
+        try {
+          // Fetch the single patient
+          const { data: patient, error: pErr } = await supabaseClient
+            .from('patients')
+            .select('*')
+            .eq('id', id)
+            .single();
+          if (pErr || !patient) {
+            document.getElementById('patient-name').textContent = 'Patient not found';
+            console.error(pErr);
+            return;
+          }
+          // Populate fields
+          document.getElementById('patient-name').textContent      = `${patient.first_name} ${patient.last_name}`;
+          document.getElementById('patient-first').textContent     = patient.first_name || '—';
+          document.getElementById('patient-last').textContent      = patient.last_name || '—';
+          document.getElementById('patient-email').textContent     = patient.email || '—';
+          document.getElementById('patient-phone').textContent     = patient.phone || '—';
+          document.getElementById('patient-birthday').textContent  = patient.birthday || '—';
+          document.getElementById('patient-marital').textContent   = patient.marital_status || '—';
+          document.getElementById('patient-sex').textContent       = patient.sex || '—';
+          document.getElementById('patient-blood').textContent     = patient.blood_group || '—';
+          document.getElementById('patient-weight').textContent    = patient.weight || '—';
+          document.getElementById('patient-height').textContent    = patient.height || '—';
+          document.getElementById('patient-address').textContent   = patient.address || '—';
+          document.getElementById('patient-history').textContent   = patient.history || '—';
+
+          // Fetch document metadata
+          const { data: docs, error: dErr } = await supabaseClient
+            .from('patient_documents')
+            .select('file_url')
+            .eq('patient_id', id);
+          if (dErr) {
+            console.error(dErr);
+            return;
+          }
+          const list = document.getElementById('documents-list');
+          docs.forEach(doc => {
+            // Get the public URL for the file
+            const { data: urlData, error: urlError } = supabaseClient
+              .storage
+              .from('patient-documents')
+              .getPublicUrl(doc.file_url);
+            if (urlError) {
+              console.error('Error fetching public URL for', doc.file_url, urlError);
+              return;
+            }
+            const publicUrl = urlData.publicUrl;
+            // Create list item with download link
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${publicUrl}" target="_blank">${doc.file_url.split('/').pop()}</a>`;
+            list.appendChild(li);
+          });
+        } catch (err) {
+          console.error('Unexpected error:', err);
+        }
+      });
+    </script>
+
+</body>
+
+</html>
