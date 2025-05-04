@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,8 +120,9 @@
             <div class="warper container-fluid">
               <div class="patient-detail">
                 <div class="card mb-4">
-                  <div class="card-header">
-                    <h4 id="patient-name">Loading...</h4>
+                  <div class="card-header d-flex align-items-center">
+                    <img id="patient-photo" class="rounded-circle img-fluid me-3" width="350" height="350" alt="Profile Photo">
+                    <h4 id="patient-name" class="mb-0">Loading...</h4>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -153,6 +153,20 @@
                     </div>
                   </div>
                 </div>
+                  <!-- Consent Form -->
+                  <div class="row">
+                      <div class="col-xl-12">
+                          <div class="form-group mt-2">
+                              <button id="btn-sign-consent" type="button" class="btn btn-outline-primary me-2">
+                                  Open Consent Form
+                              </button>
+                              <button id="btn-sign-terms" type="button" class="btn btn-outline-primary">
+                                  Open Terms & Conditions
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
                 <!-- Documents card -->
                 <div class="card">
                   <div class="card-header">
@@ -160,6 +174,40 @@
                   </div>
                   <div class="card-body">
                     <ul id="documents-list" class="list-unstyled mb-0"></ul>
+                  </div>
+                </div>
+                <!-- Change Log card -->
+                <div class="card mt-4">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Patient Change Log</h5>
+                    <button id="add-log-btn" class="btn btn-sm btn-primary">Add Entry</button>
+                  </div>
+                  <div class="card-body">
+                    <!-- New log form (hidden until "Add Entry" clicked) -->
+                    <form id="new-log-form" class="mb-3" style="display:none;">
+                      <div class="row">
+                        <div class="col-md-4 mb-2">
+                          <label for="log-bp" class="form-label">Blood Pressure</label>
+                          <input type="text" id="log-bp" class="form-control" placeholder="e.g. 120/80">
+                        </div>
+                        <div class="col-md-4 mb-2">
+                          <label for="log-oxygen" class="form-label">Oxygen Level (%)</label>
+                          <input type="number" id="log-oxygen" class="form-control" placeholder="e.g. 98">
+                        </div>
+                        <div class="col-md-4 mb-2">
+                          <label for="log-temp" class="form-label">Temperature (°C)</label>
+                          <input type="number" step="0.1" id="log-temp" class="form-control" placeholder="e.g. 36.6">
+                        </div>
+                      </div>
+                      <div class="mb-2">
+                        <label for="log-entry" class="form-label">Notes</label>
+                        <textarea id="log-entry" class="form-control" rows="2" placeholder="Additional notes"></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-sm btn-success">Save Log</button>
+                      <button type="button" id="cancel-log-btn" class="btn btn-sm btn-secondary">Cancel</button>
+                    </form>
+                    <!-- Existing log entries -->
+                    <ul id="log-list" class="list-group"></ul>
                   </div>
                 </div>
               </div>
@@ -194,10 +242,17 @@
         // Parse ?id= from URL
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
+
         if (!id) {
           document.getElementById('patient-name').textContent = 'No patient ID';
           return;
         }
+          document.getElementById('btn-sign-consent').addEventListener('click', () => {
+              window.open(`consent.html?id=${id}`, '_blank');
+          });
+          document.getElementById('btn-sign-terms').addEventListener('click', () => {
+              window.open(`terms.html?id=${id}`, '_blank');
+          });
 
         try {
           // Fetch the single patient
@@ -225,6 +280,24 @@
           document.getElementById('patient-height').textContent    = patient.height || '—';
           document.getElementById('patient-address').textContent   = patient.address || '—';
           document.getElementById('patient-history').textContent   = patient.history || '—';
+
+          // Display profile photo
+          const photoEl = document.getElementById('patient-photo');
+          if (patient.profile_url) {
+            console.log('Profile URL path:', patient.profile_url);
+            const { data: photoUrlData, error: photoUrlErr } = supabaseClient
+              .storage.from('patient-photos')
+              .getPublicUrl(patient.profile_url);
+            console.log('getPublicUrl returned:', photoUrlData, photoUrlErr);
+            if (!photoUrlErr && photoUrlData.publicUrl) {
+              photoEl.src = photoUrlData.publicUrl;
+              console.log('Photo element src set to:', photoUrlData.publicUrl);
+            } else {
+              console.error('Failed to set photo src:', photoUrlErr);
+            }
+          } else {
+            console.warn('No profile_url found for patient:', patient);
+          }
 
           // Fetch document metadata
           const { data: docs, error: dErr } = await supabaseClient
@@ -280,6 +353,83 @@
             }
         });
     </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  const logList = document.getElementById('log-list');
+  const newLogForm = document.getElementById('new-log-form');
+  const addLogBtn = document.getElementById('add-log-btn');
+  const cancelLogBtn = document.getElementById('cancel-log-btn');
+  const logEntry = document.getElementById('log-entry');
+
+
+  // Fetch and render logs
+  async function loadLogs() {
+    logList.innerHTML = '';
+    const { data: logs, error } = await supabaseClient
+      .from('patient_logs')
+      .select('*')
+      .eq('patient_id', id)
+      .order('created_at', { ascending: false });
+    if (error) return console.error(error);
+    logs.forEach(log => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.innerHTML = `
+        <small class="text-muted">${new Date(log.created_at).toLocaleString()}</small>
+        <ul class="list-unstyled mb-1 mt-1">
+          <li><strong>Blood Pressure:</strong> ${log.blood_pressure || '—'}</li>
+          <li><strong>Oxygen Level:</strong> ${log.oxygen_level != null ? log.oxygen_level + '%' : '—'}</li>
+          <li><strong>Temperature:</strong> ${log.temperature != null ? log.temperature + '°C' : '—'}</li>
+        </ul>
+        <div>${log.entry || ''}</div>
+      `;
+      logList.appendChild(li);
+    });
+  }
+
+  // Show/hide form
+  addLogBtn.addEventListener('click', () => {
+    newLogForm.style.display = 'block';
+    addLogBtn.disabled = true;
+  });
+  cancelLogBtn.addEventListener('click', () => {
+    newLogForm.style.display = 'none';
+    addLogBtn.disabled = false;
+    logEntry.value = '';
+  });
+
+  // Handle new log submission
+  newLogForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const bp = document.getElementById('log-bp').value.trim();
+    const oxygen = parseFloat(document.getElementById('log-oxygen').value);
+    const temp = parseFloat(document.getElementById('log-temp').value);
+    const notes = document.getElementById('log-entry').value.trim();
+    // Optionally, you may validate at least one field is filled; for now, allow empty notes
+    const { error } = await supabaseClient
+      .from('patient_logs')
+      .insert([{
+        patient_id: id,
+        blood_pressure: bp,
+        oxygen_level: oxygen,
+        temperature: temp,
+        entry: notes
+      }]);
+    if (error) return console.error(error);
+    document.getElementById('log-bp').value = '';
+    document.getElementById('log-oxygen').value = '';
+    document.getElementById('log-temp').value = '';
+    document.getElementById('log-entry').value = '';
+    newLogForm.style.display = 'none';
+    addLogBtn.disabled = false;
+    loadLogs();
+  });
+
+  // Initial load
+  loadLogs();
+});
+</script>
 </body>
 
 </html>

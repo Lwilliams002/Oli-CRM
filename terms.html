@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabib Apps web | Admin Dashboard Template</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+    <!-- Base Styling  -->
+    <link rel="stylesheet" href="assets/main/css/fonts.css">
+    <link rel="stylesheet" href="assets/main/css/style.css">
+
+    <!-- Signature Pad -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Supabase UMD -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+
+    <style>
+      .sig-box { width: 100%; max-width: 600px; margin: 1rem auto; }
+      .sig-box canvas { width: 100% !important; height: 200px !important; border: 1px solid #ced4da; border-radius: 4px; }
+    </style>
+</head>
+
+<body>
+    <div id="main-wrapper" class="show">
+
+
+        <!-- start section sidebar -->
+        <aside class="left-panel nicescroll-box">
+            <nav class="navigation">
+                <ul class="list-unstyled main-menu">
+                    <li class="has-submenu active">
+                        <a href="index.html">
+                            <i class="fas fa-th-large"></i>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="javascript:void()" class="has-arrow mm-collapsed">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-label">Patients</span>
+                        </a>
+                        <ul class="list-unstyled mm-collapse">
+                            <li><a href="new-patient.html">New Patient</a></li>
+                            <li><a href="all-patients.html">All Patients</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="new-appointment.html">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span class="nav-label">Appointment</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+        </aside>
+        <!-- End section sidebar -->
+
+
+        <!-- start logo components -->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html"> <img class="logo-tabib" src="assets/images/download.png" alt=""></a>
+                <a href="index.html"><img class="brand-title" src="assets/images/logo.png" alt=""></a>
+            </div>
+        </div>
+        <!-- End logo components -->
+
+
+        <!-- start section header -->
+        <div class="header">
+            <header class="top-head container-fluid">
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="line"></span><span class="line"></span><span class="line"></span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="fullscreen notification_dropdown widget-5">
+                        <div class="full">
+                            <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="my-account-wrapper widget-7">
+                        <div class="account-wrapper">
+                            <div class="account-control">
+                                <a class="login header-profile" href="#" title="Sign in">
+                                    <div class="header-info">
+                                        <span id="user-email">Dr Roberts</span>
+                                        <small>Admin</small>
+                                    </div>
+
+                                </a>
+                                <div class="account-dropdown-form dropdown-container">
+                                    <div class="form-content">
+                                        <a href="page-login.html">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span class="ml-2">Logout </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- End section header -->
+
+
+        <!-- start section content -->
+        <div class="content-body">
+            <div class="warper container-fluid">
+              <div id="terms-container">
+                <h3>Beauty Recovery Home - Consentimiento Informado y Guía de Servicios</h3>
+                <p>
+                  Yo, <strong id="patient-name">[nombre de la paciente]</strong>, declaro haber sido informada y entender los siguientes puntos:
+                </p>
+                <!-- Paste the terms content here as HTML paragraphs/lists -->
+                <div id="terms-text">
+                  <p>Beauty Recovery Home</p>
+                  <h4>Consentimiento Informado</h4>
+                  <p>
+                    La Casa de Recuperación brinda un espacio seguro y cómodo para la recuperación postoperatoria, con
+                    asistencia no médica enfocada en el bienestar, descanso y apoyo general de la paciente durante su proceso
+                    de recuperación.
+                  </p>
+
+                  <h5>Servicios Incluidos</h5>
+                  <ul>
+                    <li>Alojamiento</li>
+                    <li>Alimentación saludable</li>
+                    <li>Asistencia general en higiene y movilidad</li>
+                    <li>Supervisión básica del estado general</li>
+                    <li>Soporte emocional</li>
+                    <li>Administración de medicamentos previamente indicados por un médico</li>
+                  </ul>
+
+                  <h5>Derechos de la Paciente</h5>
+                  <ul>
+                    <li>Recibir un trato digno, respetuoso y confidencial</li>
+                    <li>Estar informada sobre los servicios ofrecidos y sus limitaciones</li>
+                    <li>Expresar sugerencias o inquietudes libremente</li>
+                    <li>Decidir cuándo finalizar su estancia con aviso previo</li>
+                    <li>Tener privacidad en su habitación y proceso de recuperación</li>
+                  </ul>
+
+                  <h5>Responsabilidades de la Paciente</h5>
+                  <ul>
+                    <li>Informar sobre condiciones médicas, alergias o antecedentes quirúrgicos</li>
+                    <li>Cumplir con las recomendaciones médicas</li>
+                    <li>Tratar con respeto al personal y a otras pacientes</li>
+                  </ul>
+
+                  <p>Beauty Recovery Home - No consumir alcohol, drogas ni recibir visitas no autorizadas</p>
+                  <p>Firmar el consentimiento antes del ingreso</p>
+
+                  <h5>Exoneración de Responsabilidad</h5>
+                  <p>
+                    Reconozco que la casa de recuperación no es una clínica médica, y que en caso de emergencia se
+                    contactará al médico tratante o se solicitará atención médica externa según corresponda.
+                  </p>
+
+                  <h5>Política de Cancelación y Reembolsos</h5>
+                  <ul>
+                    <li>No se realizan reembolsos una vez iniciado el servicio.</li>
+                    <li>Cancelaciones con menos de 48 horas no serán reembolsadas.</li>
+                    <li>Cancelaciones con más de 48 horas pueden aplicar a reembolso parcial.</li>
+                    <li>En caso de no presentarse, se pierde automáticamente el derecho a reembolso.</li>
+                  </ul>
+
+                  <h5>Derechos y Responsabilidades del Personal</h5>
+                  <p><strong>Derechos:</strong></p>
+                  <ul>
+                    <li>Ser tratado con respeto por parte de las pacientes</li>
+                    <li>Negarse a realizar actividades fuera de su función</li>
+                    <li>Trabajar en un ambiente seguro</li>
+                    <li>Solicitar apoyo a la administración ante conflictos</li>
+                    <li>Recibir instrucciones claras sobre el estado de la paciente</li>
+                  </ul>
+                  <p><strong>Responsabilidades:</strong></p>
+                  <ul>
+                    <li>Trato amable y empático</li>
+                    <li>Mantener confidencialidad</li>
+                  </ul>
+
+                  <p>Beauty Recovery Home - Seguir protocolos de higiene y seguridad</p>
+                  <p>Reportar cualquier irregularidad</p>
+                  <p>Cumplir tareas asignadas</p>
+                  <p>No emitir diagnósticos médicos</p>
+
+                  <h5>Límites de la Asistencia en Higiene Íntima</h5>
+                  <p>
+                    El personal no está obligado a realizar higiene íntima completa salvo que exista una condición física que lo
+                    justifique médicamente. Se ofrecerá apoyo verbal o supervisión si la paciente requiere guía, respetando su
+                    autonomía y privacidad.
+                  </p>
+
+                  <h5>Tarifas</h5>
+                  <ul>
+                    <li>3 noches / 4 días: $1200</li>
+                    <li>4 noches / 5 días: $1500</li>
+                    <li>5 noches / 6 días: $1700</li>
+                    <li>6 noches / 7 días: $1900</li>
+                    <li>7 noches / 8 días: $2200</li>
+                    <li>8 noches / 9 días: $2400</li>
+                    <li>9 noches / 10 días: $2600</li>
+                    <li>10 noches / 11 días: $2800</li>
+                    <li>11 noches / 12 días: $3000</li>
+                  </ul>
+
+                  <h5>Contacto</h5>
+                  <p>WhatsApp: +1 786-457-1328</p>
+                  <p>Instagram: @beauty_recoveryhome</p>
+                  <p>TikTok: beauty.recoveryho</p>
+                </div>
+                <div class="sig-box">
+                  <canvas id="sigpad"></canvas>
+                  <div class="mt-2">
+                    <button id="btn-clear" class="btn btn-secondary">Borrar Firma</button>
+                    <button id="btn-save" class="btn btn-primary">Firmar y Guardar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- End section content -->
+
+
+    </div>
+
+    <!-- JQuery v3.5.1 -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+
+    <!-- popper js -->
+    <script src="assets/plugins/popper/popper.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Moment -->
+    <script src="assets/plugins/moment/moment.min.js"></script>
+
+    <!-- Date Range Picker -->
+    <script src="assets/plugins/daterangepicker/daterangepicker.min.js"></script>
+
+    <!-- Main Custom JQuery -->
+    <script src="assets/js/toggleFullScreen.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/option-themes.js"></script>
+
+    <script>
+    (async () => {
+      // Supabase init
+      const SUPABASE_URL = 'https://aqkkmgjlcxdbuhwzjeou.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxa2ttZ2psY3hkYnVod3pqZW91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3MjYxNjAsImV4cCI6MjA2MTMwMjE2MH0.kVMtxC6XgrGA8BFwbruCOY5KYv84Phb1M6gi2brojtY';
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // Get patient ID
+      const params = new URLSearchParams(window.location.search);
+      const patientId = params.get('id');
+      if (!patientId) throw new Error('Missing patient ID');
+
+      // Populate patient name
+      const { data: patient } = await supabase
+        .from('patients')
+        .select('first_name,last_name')
+        .eq('id', patientId)
+        .single();
+      if (patient) {
+        document.getElementById('patient-name').textContent =
+          `${patient.first_name} ${patient.last_name}`;
+      }
+
+      // Setup signature pad
+      const canvas = document.getElementById('sigpad');
+      const signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,1)' });
+      function resizeCanvas() {
+        const ratio = window.devicePixelRatio || 1;
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext('2d').scale(ratio, ratio);
+        signaturePad.clear();
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      document.getElementById('btn-clear').addEventListener('click', () => {
+        signaturePad.clear();
+      });
+
+      document.getElementById('btn-save').addEventListener('click', async () => {
+        if (signaturePad.isEmpty()) return alert('Por favor, firme primero.');
+
+        // Render to canvas
+        const element = document.getElementById('terms-container');
+        const canvasEl = await html2canvas(element, { scale: 2 });
+        const imgData = canvasEl.toDataURL('image/png');
+
+        // Create PDF spanning two pages
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ unit: 'pt', format: 'letter', orientation: 'portrait' });
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const margin = 40;
+        const usableWidth = pageWidth - margin * 2;
+        // Determine full content height in points (assuming 96dpi canvas)
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgWidth = usableWidth;
+        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+        // First page: top half of the content
+        pdf.addImage(imgData, 'PNG', margin, margin, usableWidth, imgHeight);
+        // If content height exceeds one page, add second page
+        if (imgHeight > pageHeight) {
+          const remainingHeight = imgHeight - pageHeight;
+          // Add a new page
+          pdf.addPage();
+          // Draw the remaining portion: use negative Y offset
+          pdf.addImage(imgData, 'PNG', margin, margin - pageHeight, usableWidth, imgHeight);
+        }
+        const pdfBlob = pdf.output('blob');
+
+        // Upload PDF
+        const filePath = `signed/${patientId}/Terms-${Date.now()}.pdf`;
+        const { data: uploadData, error: uploadErr } = await supabase
+          .storage.from('patient-documents')
+          .upload(filePath, pdfBlob, { upsert: true });
+        if (uploadErr) return alert('Error subiendo PDF.');
+
+        // Insert metadata row
+        const { error: dbErr } = await supabase
+          .from('patient_documents')
+          .insert([{ patient_id: patientId, template_key: 'terms', file_url: uploadData.path, file_type: 'pdf' }]);
+        if (dbErr) return alert('Error registrando documento.');
+
+        alert('Términos firmados y guardados.');
+        window.close();
+      });
+    })();
+    </script>
+
+</body>
+
+</html>

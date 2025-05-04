@@ -138,7 +138,23 @@
                                     <div class="basic-form">
                                         <form id="new-patient-form">
                                             <div class="row">
-                                                <div class="col-xl-6">
+                                                <div class="col-xl-4">
+                                                    <div class="form-group row widget-3">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-input">
+                                                                <label class="labeltest" for="patient-photo">
+                                                                    <span> Drop image here or click to upload. </span>
+                                                                </label>
+                                                                <input type="file" id="patient-photo" name="patientPhoto" accept="image/*"
+                                                                       onchange="showPreview(event);">
+                                                                <div class="preview">
+                                                                    <img id="file-ip-1-preview" src="#" alt="img">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4">
                                                     <div class="form-group">
                                                         <input type="text" name="firstName" class="form-control"
                                                             placeholder="First Name">
@@ -154,7 +170,7 @@
                                                             placeholder="Mobile No.">
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-6">
+                                                <div class="col-xl-4">
                                                     <div class="form-group">
                                                         <div class="input-group">
                                                             <input type="text" name="birthday" class="form-control"
@@ -229,6 +245,7 @@
                                                         <label for="patient-documents" class="form-label">Upload Documents</label>
                                                         <input type="file" id="patient-documents" name="patientDocuments" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" multiple>
                                                     </div>
+
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -298,6 +315,19 @@
         // Collect form fields
         const form = e.target;
         const formData = new FormData(form);
+        // Upload profile photo if provided
+        const photoFile = formData.get('patientPhoto');
+        let profileUrl = null;
+        if (photoFile && photoFile.name) {
+          const { data: photoData, error: photoErr } = await supabaseClient
+            .storage.from('patient-photos')
+            .upload(`photos/${Date.now()}_${photoFile.name}`, photoFile);
+          if (photoErr) {
+            console.error('Photo upload error:', photoErr);
+          } else {
+            profileUrl = photoData.path;
+          }
+        }
         // Upload documents if any
         const files = formData.getAll('patientDocuments');
         const uploadedUrls = [];
@@ -326,7 +356,8 @@
           weight: formData.get('weight'),
           height: formData.get('height'),
           address: formData.get('address'),
-          history: formData.get('history')
+          history: formData.get('history'),
+          profile_url: profileUrl,
         };
         // Insert into Supabase
         const { data, error } = await supabaseClient
