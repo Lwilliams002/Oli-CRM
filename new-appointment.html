@@ -29,6 +29,49 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxa2ttZ2psY3hkYnVod3pqZW91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU3MjYxNjAsImV4cCI6MjA2MTMwMjE2MH0.kVMtxC6XgrGA8BFwbruCOY5KYv84Phb1M6gi2brojtY';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
+    <!-- Google API and Google Identity Services -->
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      const GAPI_API_KEY = 'AIzaSyDSZYqBaWataagonRnEfcnIM6FcjPqVRC0';
+      const GAPI_CLIENT_ID = '258618732190-mhkmuc3p5h88psbtmqjfvvpvqn39o317.apps.googleusercontent.com';
+      const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+      const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+      let tokenClient;
+      let pendingEvent;
+
+      // Initialize gapi and GIS clients
+      function initializeGapi() {
+        gapi.load('client', async () => {
+          await gapi.client.init({ apiKey: GAPI_API_KEY, discoveryDocs: DISCOVERY_DOCS });
+        });
+      }
+      function initializeGis() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: GAPI_CLIENT_ID,
+          scope: SCOPES,
+          callback: (resp) => {
+            if (resp.error) {
+              console.error('Token error:', resp);
+              return;
+            }
+            // insert calendar event now that we have a token
+            gapi.client.calendar.events.insert({
+              calendarId: 'primary',
+              resource: pendingEvent
+            }).then(res => {
+              console.log('Calendar event created:', res);
+              // After calendar event, reload the page
+              window.location.reload();
+            }).catch(err => console.error('Calendar insert error:', err));
+          }
+        });
+      }
+      window.onload = () => {
+        initializeGapi();
+        initializeGis();
+      };
+    </script>
 
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
@@ -160,10 +203,6 @@
                           <div class="card-body">
                             <form id="new-appointment-form" class="row align-items-start">
                               <div class="col-md-6 col-sm-12 form-group">
-                                <label for="date">Date</label>
-                                <input name="date" id="date" class="form-control" type="text" value="06/17/2022">
-                              </div>
-                              <div class="col-md-6 col-sm-12 form-group">
                                 <label for="timeSlot">Time Slot</label>
                                 <select name="timeSlot" id="timeSlot" class="form-control form-select">
                                   <option value="00:00">12:00 AM</option>
@@ -221,6 +260,27 @@
                                 <select id="patientId" name="patientId" class="form-control form-select">
                                   <option value="">Select Patient...</option>
                                 </select>
+                              </div>
+                              <!-- New fields for entry date, surgery date, surgeon, clinic, procedure -->
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="entryDate">Fecha de Entrada</label>
+                                <input type="date" name="entryDate" id="entryDate" class="form-control">
+                              </div>
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="surgeryDate">Fecha de Cirugía</label>
+                                <input type="date" name="surgeryDate" id="surgeryDate" class="form-control">
+                              </div>
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="surgeon">Dr. que la opera</label>
+                                <input type="text" name="surgeon" id="surgeon" class="form-control">
+                              </div>
+                              <div class="col-md-6 col-sm-12 form-group">
+                                <label for="clinic">Clínica</label>
+                                <input type="text" name="clinic" id="clinic" class="form-control">
+                              </div>
+                              <div class="col-lg-12 form-group">
+                                <label for="procedure">Procedimiento</label>
+                                <input type="text" name="procedure" id="procedure" class="form-control">
                               </div>
                               <div class="col-lg-12 form-group">
                                 <label for="motif">Motif Patient</label>
@@ -374,6 +434,7 @@
           opt.textContent = `${p.first_name} ${p.last_name}`;
           select.appendChild(opt);
         });
+        window.patientsList = patients;  // for calendar event lookup
       });
     </script>
 
@@ -384,8 +445,12 @@
         const fv = new FormData(form);
         const record = {
           patient_id: fv.get('patientId'),
-          appointment_date: fv.get('date'),
           appointment_time: fv.get('timeSlot'),
+          entry_date: fv.get('entryDate'),
+          surgery_date: fv.get('surgeryDate'),
+          surgeon: fv.get('surgeon'),
+          clinic: fv.get('clinic'),
+          procedure: fv.get('procedure'),
           motif: fv.get('motif')
         };
         const { data, error } = await supabaseClient
@@ -396,11 +461,31 @@
           console.error('Insert appointment error:', error);
           alert('Could not save appointment: ' + error.message);
         } else {
+          // Prepare Google Calendar event
+          const rec = data[0];
+          const patient = window.patientsList.find(p => p.id === rec.patient_id) || {};
+          const patientName = `${patient.first_name} ${patient.last_name}`.trim();
+          // Parse surgery_date into components
+          const [year, month, day] = rec.surgery_date.split('-').map(Number);
+          // Parse time string (e.g. "13:30") into hours and minutes
+          const [hours, minutes] = rec.appointment_time.split(':').map(Number);
+          // Construct local Date objects directly
+          const start = new Date(year, month - 1, day, hours, minutes, 0, 0);
+          // End 30 minutes later
+          const end = new Date(year, month - 1, day, hours, minutes + 30, 0, 0);
+          pendingEvent = {
+            summary: `Cita: ${patientName}`,
+            location: rec.clinic,
+            description: `Paciente: ${patientName}\nDr.: ${rec.surgeon}\nProcedimiento: ${rec.procedure}\nMotivo: ${rec.motif}`,
+            start: { dateTime: start.toISOString(), timeZone: 'America/New_York' },
+            end:   { dateTime: end.toISOString(),   timeZone: 'America/New_York' }
+          };
+          // Request access token (will trigger calendar insert in callback)
+          tokenClient.requestAccessToken({ prompt: 'consent' });
           alert('Appointment saved!');
           // optionally close modal
           $('#newAppointment').modal('hide');
-          // reload or update table
-          window.location.reload();
+          // window.location.reload();  <-- removed to allow calendar callback
         }
       });
     </script>

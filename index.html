@@ -187,7 +187,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Time</th>
-                                                    <th>Date</th>
+                                                    <th>Surgery Date</th>
                                                     <th>Patient</th>
                                                     <th>Address</th>
                                                     <th>Phone</th>
@@ -225,6 +225,9 @@
     <script src="assets/plugins/jquery/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+    <!-- Datatable -->
+    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/init-tdatatable.js"></script>
     <script>
       $(document).ready(async function() {
         const table = $('#example1').DataTable();
@@ -242,14 +245,14 @@
         // Fetch appointments
         const { data: appts } = await supabaseClient
           .from('appointments')
-          .select('id, appointment_time, appointment_date, patient_id, motif, status')
-          .order('appointment_date', { ascending: false });
+          .select('id, appointment_time, surgery_date, patient_id, motif, status')
+          .order('surgery_date', { ascending: false });
         // Populate table
         table.clear();
         appts.forEach(a => {
           table.row.add([
             a.appointment_time,
-            a.appointment_date,
+            a.surgery_date,
             patientMap[a.patient_id] || 'Unknown',
             addressMap[a.patient_id] || '—',
             phoneMap[a.patient_id] || '—',
@@ -304,9 +307,6 @@
         });
       });
     </script>
-    <!-- Datatable -->
-    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="assets/js/init-tdatatable.js"></script>
 
     <!-- popper js -->
     <script src="assets/plugins/popper/popper.min.js"></script>
