@@ -478,7 +478,13 @@
             location: rec.clinic,
             description: `Paciente: ${patientName}\nDr.: ${rec.surgeon}\nProcedimiento: ${rec.procedure}\nMotivo: ${rec.motif}`,
             start: { dateTime: start.toISOString(), timeZone: 'America/New_York' },
-            end:   { dateTime: end.toISOString(),   timeZone: 'America/New_York' }
+            end:   { dateTime: end.toISOString(),   timeZone: 'America/New_York' },
+            reminders: {
+              useDefault: false,
+              overrides: [
+                { method: 'popup', minutes: 24 * 60 }
+              ]
+            }
           };
           // Request access token (will trigger calendar insert in callback)
           tokenClient.requestAccessToken({ prompt: 'consent' });

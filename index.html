@@ -152,8 +152,8 @@
                                             <i class="fas fa-calendar-check fa-2x"></i>
                                         </span>
                                         <div class="media-body">
-                                            <span class="text-white">Today's Appointments</span>
-                                            <h3 id="todays-appointments-count" class="mb-0 text-white">24</h3>
+                                            <span class="text-white">Total Appointments</span>
+                                            <h3 id="total-appointments-count" class="mb-0 text-white">—</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                         </span>
                                         <div class="media-body">
                                             <span class="text-white">Total Patients</span>
-                                            <h3 id="total-patients-count" class="mb-0 text-white">1,200</h3>
+                                            <h3 id="total-patients-count" class="mb-0 text-white">—</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -325,19 +325,14 @@
     <script src="assets/js/option-themes.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
-        // Compute today’s date in YYYY-MM-DD (local date, not UTC)
-        const now = new Date();
-        const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-
-        // Fetch count of today’s appointments
-        let { count: todayCount, error: appErr } = await supabaseClient
+        // Fetch total appointments count
+        let { count: apptCount, error: apptErr } = await supabaseClient
           .from('appointments')
-          .select('*', { count: 'exact', head: true })
-          .eq('appointment_date', today);
-        if (!appErr) {
-          document.getElementById('todays-appointments-count').textContent = todayCount;
+          .select('*', { count: 'exact', head: true });
+        if (!apptErr) {
+          document.getElementById('total-appointments-count').textContent = apptCount;
         } else {
-          console.error('Error fetching today’s appointments count:', appErr);
+          console.error('Error fetching total appointments count:', apptErr);
         }
 
         // Fetch total patients count
