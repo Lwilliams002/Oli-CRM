@@ -342,21 +342,6 @@
             profileUrl = photoData.path;
           }
         }
-        // Upload documents if any
-        const files = formData.getAll('patientDocuments');
-        const uploadedUrls = [];
-        for (let file of files) {
-          if (file && file.name) {
-            const { data, error } = await supabaseClient
-              .storage.from('patient-documents')
-              .upload(`documents/${Date.now()}_${file.name}`, file);
-            if (error) {
-              console.error('Upload error:', error);
-            } else {
-              uploadedUrls.push({ path: data.path });
-            }
-          }
-        }
         // Prepare record
         const record = {
           first_name: formData.get('firstName'),
@@ -392,18 +377,44 @@
         }
 
         const patientId = data[0].id;
-        // Insert each uploaded document metadata
-        for (let fileInfo of uploadedUrls) {
-          const { path } = fileInfo;
-          const docRecord = {
-            patient_id: patientId,
-            file_url: path,
-            file_type: path.split('.').pop().toLowerCase()
-          };
-          const { error: docErr } = await supabaseClient
-            .from('patient_documents')
-            .insert([docRecord]);
-          if (docErr) console.error('Document insert error:', docErr);
+        // Upload and record all additional documents (PDFs, images, etc.)
+        const docFiles = formData.getAll('patientDocuments');
+        for (let file of docFiles) {
+          if (file && file.name) {
+            const timestamp = Date.now();
+            // Sanitize filename: remove diacritics, spaces, and invalid characters
+            const originalName = file.name.normalize('NFKD');
+            const safeName = originalName
+              .replace(/[\u0300-\u036f]/g, '')      // strip diacritics
+              .replace(/\s+/g, '_')                // replace spaces with underscores
+              .replace(/[^a-zA-Z0-9_.-]/g, '');     // remove any other invalid chars
+            const filePath = `documents/${timestamp}_${safeName}`;
+            // Upload to storage
+            const { data: uploadData, error: uploadError } = await supabaseClient
+              .storage
+              .from('patient-documents')
+              .upload(filePath, file);
+            if (uploadError) {
+              console.error('Document upload error:', uploadError);
+              continue;
+            }
+            // Determine the correct storage key for the inserted record
+            const storedPath = uploadData.path ?? uploadData.Key;
+            if (!storedPath) {
+              console.error('Upload returned no path or Key:', uploadData);
+              continue;
+            }
+            // Insert the document record
+            const fileType = file.name.split('.').pop().toLowerCase();
+            const { error: insertError } = await supabaseClient
+              .from('patient_documents')
+              .insert([{
+                patient_id: patientId,
+                file_url: storedPath,
+                file_type: fileType
+              }]);
+            if (insertError) console.error('Document insert error:', insertError);
+          }
         }
         alert('Patient saved successfully!');
         window.location.href = 'all-patients.html';

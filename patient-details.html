@@ -184,8 +184,10 @@
                 <div class="card">
                   <div class="card-header">
                     <h5>Documents</h5>
+                    <button id="add-document-btn" class="btn btn-sm btn-primary ms-2">Add Document</button>
                   </div>
                   <div class="card-body">
+                    <input type="file" id="document-input" style="display:none;" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.gif" multiple />
                     <ul id="documents-list" class="list-unstyled mb-0"></ul>
                   </div>
                 </div>
@@ -333,10 +335,54 @@
               return;
             }
             const publicUrl = urlData.publicUrl;
-            // Create list item with download link
+            // Enhanced: Show inline preview for image files
+            const fileName = doc.file_url.split('/').pop();
+            const extension = fileName.split('.').pop().toLowerCase();
+            let contentHtml;
+            if (['png', 'jpg', 'jpeg', 'gif'].includes(extension)) {
+              contentHtml = `
+                <img src="${publicUrl}" alt="${fileName}" style="max-width:150px; display:block; margin-bottom:5px;">
+                <a href="${publicUrl}" target="_blank">${fileName}</a>
+              `;
+            } else {
+              contentHtml = `<a href="${publicUrl}" target="_blank">${fileName}</a>`;
+            }
             const li = document.createElement('li');
-            li.innerHTML = `<a href="${publicUrl}" target="_blank">${doc.file_url.split('/').pop()}</a>`;
+            li.innerHTML = contentHtml;
             list.appendChild(li);
+          });
+          // Add Document button logic
+          const addDocBtn = document.getElementById('add-document-btn');
+          const docInput = document.getElementById('document-input');
+          addDocBtn.addEventListener('click', () => docInput.click());
+          docInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            for (let file of files) {
+              const originalName = file.name.normalize('NFKD');
+              const safeName = originalName
+                .replace(/[\u0300-\u036f]/g, '')      // strip diacritics
+                .replace(/\s+/g, '_')                // spaces to underscores
+                .replace(/[^a-zA-Z0-9_.-]/g, '');     // remove invalid chars
+              const filePath = `documents/${Date.now()}_${safeName}`;
+              // Upload to storage
+              const { data: uploadData, error: uploadError } = await supabaseClient
+                .storage.from('patient-documents').upload(filePath, file);
+              if (uploadError) {
+                console.error('Document upload error:', uploadError);
+                continue;
+              }
+              const storedPath = uploadData.path ?? uploadData.Key;
+              // Record in database
+              const fileType = safeName.split('.').pop().toLowerCase();
+              const { error: insertError } = await supabaseClient
+                .from('patient_documents')
+                .insert([{ patient_id: id, file_url: storedPath, file_type: fileType }]);
+              if (insertError) {
+                console.error('Document insert error:', insertError);
+              }
+            }
+            // Refresh to show new documents
+            window.location.reload();
           });
         } catch (err) {
           console.error('Unexpected error:', err);
